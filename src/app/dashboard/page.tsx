@@ -46,7 +46,7 @@ export default async function DashboardPage() {
                 href="/dashboard/absensi"
                 className="transition hover:text-foreground"
               >
-                Absen
+                Absensi
               </Link>
             </div>
             <div className="flex items-center gap-3">
