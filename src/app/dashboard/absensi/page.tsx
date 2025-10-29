@@ -1,4 +1,4 @@
-import AnggotaTable from "@/components/anggota/anggota-table";
+import AbsensiContainer from "@/components/absensi/absensi-container";
 import LogoutButton from "@/components/logout-button";
 import {
   Card,
@@ -11,7 +11,7 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function DashboardPage() {
+export default async function AbsensiPage() {
   const supabase = await createClient();
 
   const {
@@ -22,9 +22,29 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const { data: anggota, error } = await supabase
+  // Get all anggota for dropdown
+  const { data: anggotaList } = await supabase
     .from("anggota")
-    .select("*")
+    .select("id, nama, dapukan")
+    .order("nama", { ascending: true });
+
+  // Get today's date
+  const today = new Date().toISOString().split("T")[0];
+
+  // Get today's absensi with anggota data
+  const { data: absensiData } = await supabase
+    .from("absensi")
+    .select(
+      `
+      *,
+      anggota:anggota_id (
+        id,
+        nama,
+        dapukan
+      )
+    `
+    )
+    .eq("tanggal", today)
     .order("created_at", { ascending: false });
 
   return (
@@ -42,11 +62,12 @@ export default async function DashboardPage() {
               >
                 Beranda
               </Link>
+
               <Link
                 href="/dashboard/absensi"
                 className="transition hover:text-foreground"
               >
-                Absen
+                Absensi
               </Link>
             </div>
             <div className="flex items-center gap-3">
@@ -57,17 +78,15 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Data Anggota</CardTitle>
-            <CardDescription>Kelola data anggota organisasi</CardDescription>
+            <CardTitle>Absensi</CardTitle>
+            <CardDescription>Kelola absensi anggota</CardDescription>
           </CardHeader>
           <CardContent>
-            {error ? (
-              <p className="text-sm text-red-600">
-                Gagal memuat data anggota. Silakan coba lagi.
-              </p>
-            ) : (
-              <AnggotaTable initialData={anggota || []} />
-            )}
+            <AbsensiContainer
+              initialAbsensi={absensiData || []}
+              anggotaList={anggotaList || []}
+              initialDate={today}
+            />
           </CardContent>
         </Card>
       </div>
