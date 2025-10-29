@@ -51,7 +51,10 @@ export default function AnggotaTable({ initialData }: AnggotaTableProps) {
             anggota
           </p>
         </div>
-        <Button onClick={handleAdd}>
+        <Button
+          onClick={handleAdd}
+          className="w-full bg-sky-600 font-semibold transition hover:bg-sky-700 sm:w-auto"
+        >
           <Plus className="mr-2 h-4 w-4" />
           Tambah Anggota
         </Button>

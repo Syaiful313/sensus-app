@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import LogoutButton from "@/components/logout-button";
 import AnggotaTable from "@/components/anggota/anggota-table";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -29,23 +30,33 @@ export default async function DashboardPage() {
   return (
     <div className="container mx-auto py-10">
       <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Dashboard</CardTitle>
-            <CardDescription>Selamat datang kembali!</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <p className="text-sm text-gray-600">Email:</p>
-              <p className="font-medium">{user.email}</p>
+        <nav className="flex flex-col gap-4 rounded-md border bg-background px-6 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-xl font-semibold">Dashboard</h1>
+            <p className="text-sm text-muted-foreground">
+              Selamat datang kembali!
+            </p>
+          </div>
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
+              <Link
+                href="/dashboard"
+                className="transition hover:text-foreground"
+              >
+                Beranda
+              </Link>
+              <Link
+                href="/dashboard/absen"
+                className="transition hover:text-foreground"
+              >
+                Absen
+              </Link>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">User ID:</p>
-              <p className="font-mono text-sm">{user.id}</p>
+            <div className="flex items-center gap-3">
+              <LogoutButton />
             </div>
-            <LogoutButton />
-          </CardContent>
-        </Card>
+          </div>
+        </nav>
 
         <Card>
           <CardHeader>

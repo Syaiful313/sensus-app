@@ -215,7 +215,11 @@ export default function AnggotaDialog({
             >
               Batal
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-sky-600 font-semibold transition hover:bg-sky-700 sm:w-auto"
+            >
               {loading ? "Menyimpan..." : "Simpan"}
             </Button>
           </DialogFooter>
